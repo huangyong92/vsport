@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="sport.domain.repository.UserRepository">
+    <resultMap id="UserMapper" type="User">
+        <result property="userId" column="user_id" javaType="INTEGER" jdbcType="INTEGER"/>
+        <result property="mobile" column="mobile" javaType="String" jdbcType="VARCHAR"/>
+        <result property="nickName" column="nick_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" javaType="String" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" javaType="Boolean" jdbcType="INTEGER"/>
+        <result property="livingCity" column="living_city" javaType="String" jdbcType="VARCHAR"/>
+        <result property="sportTarget" column="sport_target" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--todo-->
+    <!--头像可能没有，传默认的-->
+    <!--获取主键，如何映射到返回值-->
+    <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO user
+        (
+        mobile, nick_name, avatar, gender
+        <if test="livingCity != null">living_city,</if>
+        <if test="sportTarget != null">sport_target,</if>
+
+        )
+        VALUES
+        (
+
+        #{mobile, jdbcType=VARCHAR},
+        #{nickName, jdbcType=VARCHAR},
+        #{avatar, jdbcType=VARCHAR},
+        #{gender, javaType=Boolean, jdbcType=INTEGER},
+        <if test="livingCity != null">#{livingCity, jdbcType=VARCHAR},</if>
+        <if test="sportTarget != null">#{sportTarget, jdbcType=VARCHAR},</if>
+        )
+    </insert>
+
+    <!--todo-->
+    <!--如果avatar传空字符串,则返回默认的头像-->
+    <update id="updateUser" parameterType="User">
+        UPDATE user
+        <set>
+            <if test="mobile != null">mobile = #{mobile, jdbcType=VARCHAR},</if>
+            <if test="nickName != null">nick_name = #{nickName, jdbcType=VARCHAR},</if>
+            <if test="avatar != null">avatar = #{avatar, jdbcType=VARCHAR},</if>
+            <if test="gender != null">gender = #{gender, jdcbType=INTEGER},</if>
+            <if test="livingCity != null">living_city = #{livingCity, jdbcType=VARCHAR},</if>
+            <if test="sportTarget != null">sport_target = #{sportTarget, jdbcType=VARCHAR},</if>
+            user_id=#{userId, jdbcType=INTEGER}
+        </set>
+        WHERE user_id=#{userId, jdbcType=INTEGER}
+    </update>
+
+    <select id="findUserById" resultMap="UserMapper" parameterType="INTEGER">
+        SELECT * FROM user
+        WHERE user_id=#{userId, jdbcType=INTEGER}
+    </select>
+
+    <!--todo-->
+    <!--记得验证手机号码-->
+    <select id="findUserByPhone" resultMap="UserMapper" parameterType="STRING">
+        SELECT user_id, nick_name, avatar, gender
+        FROM user
+        WHERE mobile=#{mobile, jdbcType=VARCHAR}
+    </select>
+
+    <!--todo-->
+    <!--#与$在mybatis中具体的含义-->
+    <!--like的各种写法比较-->
+    <select id="findUserByName" resultMap="UserMapper" parameterType="String">
+        SELECT user_id, nick_name, avatar, gender
+        FROM user
+        WHERE nick_name like '%${_parameter}%'
+    </select>
+
+    <select id="findUserBycity" resultMap="UserMapper" parameterType="String">
+        SELECT user_id, nick_name, avatar, gender, living_city
+        FROM user
+        WHERE living_city=#{city}
+    </select>
+
+    <select id="findUserByTarget" resultMap="UserMapper" parameterType="String">
+        SELECT user_id, nick_name, avatar, gender, sport_target
+        FROM user
+        WHERE sport_target=#{target}
+    </select>
+</mapper>
