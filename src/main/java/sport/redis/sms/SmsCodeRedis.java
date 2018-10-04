@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import sport.util.Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class SmsCodeRedis {
         return mobile + ":" + time;
     }
 
+    //内部调用
     private SmsCodeEntity getSmsCode(Jedis jedis, String mobile, String sendTime) {
         String smsCodeKey = getSmsCodeKey(mobile, sendTime);
         String smsCode = jedis.hget(smsCodeKey, "code");
@@ -53,7 +55,7 @@ public class SmsCodeRedis {
 //        jedis.sadd(timeKey, "code", smsCode, "isVerify", isVerify);
         Map<String, String> smsValue = new HashMap<>();
         smsValue.put("code", smsCode);
-        smsValue.put("isVerify", "0");
+        smsValue.put("isVerify", Constant.NotVeriry);
         jedis.hmset(smsCodeKey, smsValue);
     }
 

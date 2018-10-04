@@ -13,6 +13,9 @@ public class SmsCodeEntity {
 
     public boolean isVeriry;
 
+    public SmsCodeEntity() {
+    }
+
     public SmsCodeEntity(String mobile, String smsCode, long sendTime, boolean isVeriry) {
         this.mobile = mobile;
         this.smsCode = smsCode;
