@@ -42,5 +42,8 @@ public class AccountImplTest {
 
     @Test
     public void verifySmsCode() {
+
+        int code = mAccountService.verifySmsCode(mobile, "3816");
+        assertEquals(0, code);
     }
 }

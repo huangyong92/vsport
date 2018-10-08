@@ -43,7 +43,6 @@ public class AccountImpl implements AccountService {
 
     //todo 一天只能发送4条,假如多线程刷这个接口，会不会出问题？
     //todo 看看redis能够针对一个key加锁
-    //todo 写的有问题，是今天，不是两条间隔24小时
     @Override
     public boolean isDayLimit(String mobile) {
         if (mSmsCodeEntityList.size() < Constant.SMS_DAY_COUNT) {

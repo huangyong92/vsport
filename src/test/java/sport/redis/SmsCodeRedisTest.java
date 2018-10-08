@@ -10,6 +10,8 @@ import sport.redis.sms.SmsCodeRedis;
 import sport.util.Constant;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,7 +28,51 @@ public class SmsCodeRedisTest {
 
     @Test
     public void saveSmsCode() {
-        smsCodeRedis.saveSmsCode(mobile, smsCode);
+        for (int i = 0; i < 3; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    smsCodeRedis.saveSmsCode(mobile, smsCode);
+                }
+            }).start();
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                smsCodeRedis.saveSmsCode("1111", smsCode);
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                smsCodeRedis.saveSmsCode("2222", smsCode);
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                smsCodeRedis.saveSmsCode("3333", smsCode);
+            }
+        }).start();
+
+        for (int i = 0; i < 3; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    smsCodeRedis.saveSmsCode("4444", smsCode);
+                }
+            }).start();
+        }
+
+        try {
+            CountDownLatch countDownLatch = new CountDownLatch(1);
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -50,6 +96,20 @@ public class SmsCodeRedisTest {
 
     @Test
     public void updateSmsCode() {
-        smsCodeRedis.updateSmsCode(mobile, 1538057886061l, Constant.HasVeriry);
+        for (int i = 0; i < 500; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    smsCodeRedis.updateSmsCode(mobile, 1539003460845l, Constant.HasVeriry);
+                }
+            }).start();
+        }
+
+        try {
+            CountDownLatch countDownLatch = new CountDownLatch(1);
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 import sport.enums.SmsType;
 import sport.redis.sms.SmsContent;
 
+import java.util.Random;
+
 @Component
 public class SmsContentUtil {
 
@@ -12,7 +14,11 @@ public class SmsContentUtil {
         long timeStamp = System.currentTimeMillis();
         long timeSec = timeStamp / 1000;
 
-        return String.valueOf(timeSec % 10000);
+
+        String seed = String.valueOf(timeSec);
+        int seedLen = seed.length();
+
+        return seed.substring(seedLen - 4);
     }
 
     public SmsContent getContent(String contentType) {

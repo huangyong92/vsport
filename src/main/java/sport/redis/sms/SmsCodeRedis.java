@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Transaction;
 import sport.util.Constant;
 
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public class SmsCodeRedis {
         String isVerify = jedis.hget(smsCodeKey, "isVerify");
 
         return new SmsCodeEntity(mobile, smsCode,
-                Long.valueOf(sendTime), Boolean.valueOf(isVerify));
+                Long.valueOf(sendTime),
+                (Integer.valueOf(isVerify) > 0? true : false)
+        );
     }
 
     public void saveSmsCode(String mobile, String smsCode) {
@@ -49,29 +52,35 @@ public class SmsCodeRedis {
 
         String mobileKey = getMobileKey(mobile);
         String nowTimeStr = String.valueOf(nowTime);
-        jedis.lpush(mobileKey, nowTimeStr);
+
+
+        jedis.watch(mobileKey);
+        Transaction transaction = jedis.multi();
+        transaction.lpush(mobileKey, nowTimeStr);
+        transaction.exec();
+//        jedis.lpush(mobileKey, nowTimeStr);
+
+        if (jedis.llen(mobileKey) == Constant.SMS_DAY_COUNT + 1) {
+            jedis.rpop(mobileKey);
+        }
 
         String smsCodeKey = getSmsCodeKey(mobile , nowTimeStr);
-//        jedis.sadd(timeKey, "code", smsCode, "isVerify", isVerify);
         Map<String, String> smsValue = new HashMap<>();
         smsValue.put("code", smsCode);
         smsValue.put("isVerify", Constant.NotVeriry);
         jedis.hmset(smsCodeKey, smsValue);
+        jedis.expire(smsCodeKey, 24 * 3600);
+
+        if (jedis != null) {
+            jedis.close();
+        }
     }
 
     public SmsCodeEntity getSmsCode(String mobile) {
         Jedis jedis = mJedisPool.getResource();
-
-//        String sendTime = jedis.lpop(getMobileKey(mobile));
         String sendTime = jedis.lindex(getMobileKey(mobile), 0);
 
         return getSmsCode(jedis, mobile, sendTime);
-//        String smsCodeKey = getSmsCodeKey(mobile, sendTime);
-//        String smsCode = jedis.hget(smsCodeKey, "code");
-//        String isVerify = jedis.hget(smsCodeKey, "isVerify");
-//
-//        return new SmsCodeEntity(mobile, smsCode,
-//                Long.valueOf(sendTime), Boolean.valueOf(isVerify));
     }
 
     public List<SmsCodeEntity> getSmsCodes(String mobile, int count) {
@@ -86,21 +95,34 @@ public class SmsCodeRedis {
             SmsCodeEntity smsCodeEntity = getSmsCode(jedis, mobile, time);
             smsCodeList.add(smsCodeEntity);
         }
+        if (jedis != null) {
+            jedis.close();
+        }
 
         return smsCodeList;
     }
 
     public boolean updateSmsCode(String mobile, long time, String isVeriry) {
         Jedis jedis = mJedisPool.getResource();
-
         String smsCodeKey = getSmsCodeKey(mobile, String.valueOf(time));
+
         Boolean isExist = jedis.hexists(smsCodeKey, "isVerify");
 
         //todo 不存在如何处理
         if (isExist) {
-            jedis.hset(smsCodeKey, "isVerify", isVeriry);
+            jedis.watch(smsCodeKey);
+            Transaction transaction = jedis.multi();
+            transaction.hset(smsCodeKey, "isVerify", isVeriry);
+
+            transaction.exec();
+            if (jedis != null) {
+                jedis.close();
+            }
             return true;
         } else {
+            if (jedis != null) {
+                jedis.close();
+            }
             return false;
         }
     }
