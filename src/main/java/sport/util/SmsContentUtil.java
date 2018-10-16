@@ -4,8 +4,6 @@ import org.springframework.stereotype.Component;
 import sport.enums.SmsType;
 import sport.redis.sms.SmsContent;
 
-import java.util.Random;
-
 @Component
 public class SmsContentUtil {
 

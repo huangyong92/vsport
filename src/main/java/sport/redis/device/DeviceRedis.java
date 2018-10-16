@@ -7,6 +7,10 @@ import redis.clients.jedis.JedisPool;
 
 import java.util.Set;
 
+/**
+ * 存储用户设备，及当前设备
+ * 用来验证token
+ */
 @Component
 public class DeviceRedis {
 

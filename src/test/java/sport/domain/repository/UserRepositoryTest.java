@@ -50,9 +50,6 @@ public class UserRepositoryTest {
 
     @Test
     public void findUserById() {
-        Jedis jedis = mRedisConfig.getResource();
-//        Jedis jedis = new Jedis(mRedisConfig.getHost(), mRedisConfig.getPort());
-        jedis.set("age", "15");
         User user = mUserRepository.findUserById(1);
 
         assertNotNull(user);

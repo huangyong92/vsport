@@ -18,20 +18,18 @@
     <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO user
         (
-        mobile, nick_name, avatar, gender
         <if test="livingCity != null">living_city,</if>
         <if test="sportTarget != null">sport_target,</if>
-
+        mobile, nick_name, avatar, gender
         )
         VALUES
         (
-
+        <if test="livingCity != null">#{livingCity, jdbcType=VARCHAR},</if>
+        <if test="sportTarget != null">#{sportTarget, jdbcType=VARCHAR},</if>
         #{mobile, jdbcType=VARCHAR},
         #{nickName, jdbcType=VARCHAR},
         #{avatar, jdbcType=VARCHAR},
-        #{gender, javaType=Boolean, jdbcType=INTEGER},
-        <if test="livingCity != null">#{livingCity, jdbcType=VARCHAR},</if>
-        <if test="sportTarget != null">#{sportTarget, jdbcType=VARCHAR},</if>
+        #{gender, javaType=Boolean, jdbcType=INTEGER}
         )
     </insert>
 
