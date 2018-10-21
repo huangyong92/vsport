@@ -25,6 +25,11 @@
             <id>getui-nexus</id>
             <url>http://mvn.gt.igexin.com/nexus/content/repositories/releases/</url>
         </repository>
+
+        <repository>
+            <id>maven-repository</id>
+            <url>file:///${project.basedir}/maven-repository</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -90,6 +95,18 @@
             <groupId>com.gexin.platform</groupId>
             <artifactId>gexin-rp-sdk-http</artifactId>
             <version>4.0.1.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>0.6.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mobi.vsport</groupId>
+            <artifactId>montnets.mwgate</artifactId>
+            <version>5.2</version>
         </dependency>
     </dependencies>
 

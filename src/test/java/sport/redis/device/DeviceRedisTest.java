@@ -18,11 +18,11 @@ public class DeviceRedisTest {
     @Autowired
     private DeviceRedis mDeviceRedis;
 
-    private final String mUserId = "135";
+    private final String mUserId = "Daniel135";
 
     @Test
     public void saveDeviceId() {
-        mDeviceRedis.saveDeviceId(mUserId, "222");
+        mDeviceRedis.saveDeviceId(mUserId, "1314");
     }
 
     @Test
@@ -30,5 +30,24 @@ public class DeviceRedisTest {
         Set<String> deviceIds = mDeviceRedis.getDeviceIds(mUserId);
 
         assertNotEquals(0, deviceIds);
+    }
+
+    @Test
+    public void updateLoginStatu() {
+        mDeviceRedis.updateLoginStatu(mUserId, "12345", DeviceRedis.LOGIN);
+    }
+
+    @Test
+    public void getCurrentDevice() {
+        String deviceId = mDeviceRedis.getCurrentDevice(mUserId);
+
+        assertNotEquals(null, deviceId);
+    }
+
+    @Test
+    public void isExit() {
+        Boolean isExit = mDeviceRedis.isExit(mUserId, "12345");
+
+        assertNotEquals(false, isExit);
     }
 }
