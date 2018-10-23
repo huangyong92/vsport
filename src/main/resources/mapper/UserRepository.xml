@@ -7,7 +7,7 @@
         <result property="mobile" column="mobile" javaType="String" jdbcType="VARCHAR"/>
         <result property="nickName" column="nick_name" javaType="String" jdbcType="VARCHAR"/>
         <result property="avatar" column="avatar" javaType="String" jdbcType="VARCHAR"/>
-        <result property="gender" column="gender" javaType="Boolean" jdbcType="INTEGER"/>
+        <result property="gender" column="gender" javaType="INTEGER" jdbcType="INTEGER"/>
         <result property="livingCity" column="living_city" javaType="String" jdbcType="VARCHAR"/>
         <result property="sportTarget" column="sport_target" javaType="String" jdbcType="VARCHAR"/>
     </resultMap>
@@ -20,16 +20,17 @@
         (
         <if test="livingCity != null">living_city,</if>
         <if test="sportTarget != null">sport_target,</if>
-        mobile, nick_name, avatar, gender
+        mobile, password, nick_name, avatar, gender
         )
         VALUES
         (
         <if test="livingCity != null">#{livingCity, jdbcType=VARCHAR},</if>
         <if test="sportTarget != null">#{sportTarget, jdbcType=VARCHAR},</if>
         #{mobile, jdbcType=VARCHAR},
+        #{password, jdbcType=VARCHAR},
         #{nickName, jdbcType=VARCHAR},
         #{avatar, jdbcType=VARCHAR},
-        #{gender, javaType=Boolean, jdbcType=INTEGER}
+        #{gender, javaType=INTEGER, jdbcType=INTEGER}
         )
     </insert>
 
@@ -47,6 +48,12 @@
             user_id=#{userId, jdbcType=INTEGER}
         </set>
         WHERE user_id=#{userId, jdbcType=INTEGER}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE user
+        set password=#{password}
+        where user_id=#{userId, jdbcType=INTEGER}
     </update>
 
     <select id="findUserById" resultMap="UserMapper" parameterType="INTEGER">
@@ -81,5 +88,11 @@
         SELECT user_id, nick_name, avatar, gender, sport_target
         FROM user
         WHERE sport_target=#{target}
+    </select>
+
+    <select id="getPassword" resultType="String" parameterType="String">
+        SELECT password
+        FROM user
+        WHERE nick_name=#{name}
     </select>
 </mapper>

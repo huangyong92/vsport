@@ -22,29 +22,31 @@ public class DeviceRedis {
 
 
     private String getDeviceKey(String userId) {
-        return "user:" + userId;
+        return "user:" + userId + "_device";
     }
 
     private String getLoginStatuKey(String userId, String deviceId) {
-        return "user_device:" + userId + "_" + deviceId;
+        return "user:" + userId + "_device:" + deviceId + "_statu";
     }
 
-    public void saveDeviceId(String userId, String deviceId) {
+    public void saveDeviceId(String userId, String deviceId, String loginStatu) {
         Jedis jedis = mJedisPool.getResource();
 
-        if (!isExit(userId, deviceId)) {
+//        if (!isExit(userId, deviceId)) {
             String deviceKey = getDeviceKey(userId);
             jedis.sadd(deviceKey, deviceId);
 
-            updateLoginStatu(userId, deviceId, LOGOUT);
-        }
+            updateLoginStatu(userId, deviceId, loginStatu);
+//        }
     }
 
     public void updateLoginStatu(String userId, String deviceId, String loginStatu) {
-        Jedis jedis = mJedisPool.getResource();
+//        if (isExit(userId, deviceId)) {
+            Jedis jedis = mJedisPool.getResource();
 
-        String loginStatuKey = getLoginStatuKey(userId, deviceId);
-        jedis.set(loginStatuKey, loginStatu);
+            String loginStatuKey = getLoginStatuKey(userId, deviceId);
+            jedis.set(loginStatuKey, loginStatu);
+//        }
     }
 
     public Set<String> getDeviceIds(String userId) {

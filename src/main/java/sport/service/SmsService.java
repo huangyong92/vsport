@@ -1,6 +1,6 @@
 package sport.service;
 
-public interface AccountService {
+public interface SmsService {
 
     void getSmsCodes(String mobile);
 
@@ -11,7 +11,4 @@ public interface AccountService {
     int sendSmsCode(String mobile, String smsType);
 
     int verifySmsCode(String mobile, String smsCode);
-
-
-
 }

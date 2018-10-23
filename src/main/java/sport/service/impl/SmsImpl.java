@@ -8,7 +8,7 @@ import sport.enums.SmsError;
 import sport.redis.sms.SmsCodeEntity;
 import sport.redis.sms.SmsCodeRedis;
 import sport.redis.sms.SmsContent;
-import sport.service.AccountService;
+import sport.service.SmsService;
 import sport.util.Constant;
 import sport.util.SmsContentUtil;
 import sport.util.SmsUtil;
@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class AccountImpl implements AccountService {
+public class SmsImpl implements SmsService {
 
     @Autowired
     private SmsCodeRedis mSmsCodeRedis;

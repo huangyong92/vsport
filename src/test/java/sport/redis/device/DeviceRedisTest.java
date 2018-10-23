@@ -22,7 +22,7 @@ public class DeviceRedisTest {
 
     @Test
     public void saveDeviceId() {
-        mDeviceRedis.saveDeviceId(mUserId, "1314");
+        mDeviceRedis.saveDeviceId(mUserId, "1314", DeviceRedis.LOGIN);
     }
 
     @Test

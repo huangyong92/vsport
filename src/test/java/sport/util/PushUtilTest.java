@@ -1,7 +1,7 @@
 package sport.util;
 
 import com.gexin.rp.sdk.template.LinkTemplate;
-import com.gexin.rp.sdk.template.TransmissionTemplate;
+import com.gexin.rp.sdk.template.NotificationTemplate;
 import com.gexin.rp.sdk.template.style.Style0;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +25,18 @@ public class PushUtilTest {
 
     @Test
     public void siglePush() {
-        TransmissionTemplate template =
-                pushUtil.transmissionTemplateProduce("就这样吧", 1);
-        pushUtil.siglePush(template, clientId);
+//        TransmissionTemplate template =
+//                pushUtil.transmissionTemplateProduce("就这样吧", 1);
+//        pushUtil.siglePush(template, clientId);
+
+        Style0 style0 = new Style0();
+        style0.setTitle("周末一起打羽毛球");
+        style0.setText("快点击看看");
+
+        NotificationTemplate notificationTemplate =
+                pushUtil.notificationTemplateProduct(style0, "运动", 1);
+
+        pushUtil.siglePush(notificationTemplate, clientId);
     }
 
     @Test

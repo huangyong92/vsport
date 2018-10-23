@@ -20,6 +20,10 @@ import java.util.List;
 @Component
 public class PushUtil {
 
+    public static final Integer AUTO_START_APP = 1;
+    public static final Integer WAIT_START_APP = 2;
+
+
     private static IGtPush mGtPush;
     public synchronized static void createGtPush(String appKey,
                                                  String masterSecret,
@@ -66,7 +70,7 @@ public class PushUtil {
         // 设置消息离线，并设置离线时间
         message.setOffline(true);
         // 离线有效时间，单位为毫秒，可选
-        message.setOfflineExpireTime(24 * 1000 * 3600);
+        message.setOfflineExpireTime(24 * 3600 * 1000);
 
         // taskId用于在推送时去查找对应的message
         String taskId = mGtPush.getContentId(message);
@@ -85,7 +89,7 @@ public class PushUtil {
                 SingleMessage message = new SingleMessage();
                 message.setData(batchObject.template);
                 message.setOffline(true);
-                message.setOfflineExpireTime(1 * 1000);
+                message.setOfflineExpireTime(24 * 3600 * 1000);
 
                 Target target = new Target();
                 target.setAppId(Constant.PUSH_APP_ID);

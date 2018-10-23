@@ -2,8 +2,6 @@ package sport.domain;
 
 import lombok.Data;
 
-import javax.annotation.Generated;
-
 @Data
 public class User {
 
@@ -11,11 +9,13 @@ public class User {
 
     private String mobile;
 
+    private String password;
+
     private String nickName;
 
     private String avatar;
 
-    private Boolean gender;
+    private Integer gender;
 
     private String livingCity;
 
