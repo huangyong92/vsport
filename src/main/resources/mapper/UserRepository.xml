@@ -4,7 +4,7 @@
 <mapper namespace="sport.domain.repository.UserRepository">
     <resultMap id="UserMapper" type="User">
         <result property="userId" column="user_id" javaType="INTEGER" jdbcType="INTEGER"/>
-        <result property="mobile" column="mobile" javaType="String" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" javaType="String" jdbcType="VARCHAR"/>
         <result property="nickName" column="nick_name" javaType="String" jdbcType="VARCHAR"/>
         <result property="avatar" column="avatar" javaType="String" jdbcType="VARCHAR"/>
         <result property="gender" column="gender" javaType="INTEGER" jdbcType="INTEGER"/>
@@ -20,13 +20,13 @@
         (
         <if test="livingCity != null">living_city,</if>
         <if test="sportTarget != null">sport_target,</if>
-        mobile, password, nick_name, avatar, gender
+        phone, password, nick_name, avatar, gender
         )
         VALUES
         (
         <if test="livingCity != null">#{livingCity, jdbcType=VARCHAR},</if>
         <if test="sportTarget != null">#{sportTarget, jdbcType=VARCHAR},</if>
-        #{mobile, jdbcType=VARCHAR},
+        #{phone, jdbcType=VARCHAR},
         #{password, jdbcType=VARCHAR},
         #{nickName, jdbcType=VARCHAR},
         #{avatar, jdbcType=VARCHAR},
@@ -39,7 +39,7 @@
     <update id="updateUser" parameterType="User">
         UPDATE user
         <set>
-            <if test="mobile != null">mobile = #{mobile, jdbcType=VARCHAR},</if>
+            <if test="phone != null">phone = #{phone, jdbcType=VARCHAR},</if>
             <if test="nickName != null">nick_name = #{nickName, jdbcType=VARCHAR},</if>
             <if test="avatar != null">avatar = #{avatar, jdbcType=VARCHAR},</if>
             <if test="gender != null">gender = #{gender, jdcbType=INTEGER},</if>
@@ -66,7 +66,7 @@
     <select id="findUserByPhone" resultMap="UserMapper" parameterType="STRING">
         SELECT user_id, nick_name, avatar, gender
         FROM user
-        WHERE mobile=#{mobile, jdbcType=VARCHAR}
+        WHERE phone=#{phone, jdbcType=VARCHAR}
     </select>
 
     <!--todo-->
@@ -90,9 +90,9 @@
         WHERE sport_target=#{target}
     </select>
 
-    <select id="getPassword" resultType="String" parameterType="String">
-        SELECT password
+    <select id="findUserByNameAndPassword" resultType="String">
+        SELECT user_id
         FROM user
-        WHERE nick_name=#{name}
+        WHERE nick_name=#{name} AND password=#{password}
     </select>
 </mapper>

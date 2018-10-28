@@ -45,6 +45,9 @@ public class SmsImpl implements SmsService {
     //todo 看看redis能够针对一个key加锁
     @Override
     public boolean isDayLimit(String mobile) {
+        mSmsCodeEntityList =
+                mSmsCodeRedis.getSmsCodes(mobile, Constant.SMS_DAY_COUNT);
+
         if (mSmsCodeEntityList.size() < Constant.SMS_DAY_COUNT) {
             return false;
         }
@@ -60,6 +63,10 @@ public class SmsImpl implements SmsService {
     @Override
     public boolean isIntervalOk(String mobile) {
         SmsCodeEntity smsCodeEntity = mSmsCodeRedis.getSmsCode(mobile);
+        if (smsCodeEntity == null) {
+            return true;
+        }
+
         long currentTime = System.currentTimeMillis();
 
         long intervalTime = currentTime - smsCodeEntity.sendTime;

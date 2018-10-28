@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import sport.enums.LoginEnum;
 
 import java.util.Set;
 
@@ -16,10 +17,6 @@ public class DeviceRedis {
 
     @Autowired
     private JedisPool mJedisPool;
-
-    public static final String LOGIN = "1";
-    public static final String LOGOUT = "0";
-
 
     private String getDeviceKey(String userId) {
         return "user:" + userId + "_device";
@@ -65,7 +62,7 @@ public class DeviceRedis {
             String loginKey = getLoginStatuKey(userId, device);
             String loginStatu = jedis.get(loginKey);
 
-            if (loginStatu.equals(LOGIN)) {
+            if (loginStatu.equals(LoginEnum.LOGIN.getStatu())) {
                 return device;
             }
         }

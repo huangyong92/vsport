@@ -23,7 +23,7 @@ public class SmsContentUtil {
         String code = getCode();
 
         StringBuffer contentBuffer = new StringBuffer();
-        if (SmsType.LOGIN.getType().equals(contentType)) {
+        if (SmsType.LOGIN.getCode() == Integer.parseInt(contentType)) {
             return
                     new SmsContent(code,
                             contentBuffer
@@ -34,7 +34,7 @@ public class SmsContentUtil {
 
         }
 
-        if (SmsType.FIND_PASSWORD.getType().equals(contentType)) {
+        if (SmsType.FIND_PASSWORD.getCode() == Integer.parseInt(contentType)) {
             return
                     new SmsContent(code,
                             contentBuffer

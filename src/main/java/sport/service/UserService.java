@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserService {
 
-    void addUser(User user);
+    int addUser(User user);
 
     User findUserByPhone(String phone);
 
@@ -16,7 +16,7 @@ public interface UserService {
 
     void updateUser(User user);
 
-    boolean verifyUserByPassword(String name, String password);
+    String getUserIdByPassword(String name, String password);
 
     boolean modifyPassword(String phone, String password);
 }

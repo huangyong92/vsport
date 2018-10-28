@@ -15,8 +15,8 @@ public class UserImpl implements UserService {
     private UserRepository mUserRepository;
 
     @Override
-    public void addUser(User user) {
-        mUserRepository.addUser(user);
+    public int addUser(User user) {
+        return mUserRepository.addUser(user);
     }
 
     //todo 可能要同步到redis
@@ -40,18 +40,19 @@ public class UserImpl implements UserService {
         mUserRepository.updateUser(user);
     }
 
+    //todo 是否可以用缓存
     @Override
-    public boolean verifyUserByPassword(String name, String myPassword) {
-        List<String> passwordList = mUserRepository.getPassword(name);
+    public String getUserIdByPassword(String name, String myPassword) {
+        String userId = mUserRepository.findUserByNameAndPassword(name, myPassword);
 
-        for (String password:
-                passwordList) {
-            if (password.equals(myPassword)) {
-                return true;
-            }
-        }
+//        for (String password:
+//                passwordList) {
+//            if (password.equals(myPassword)) {
+//                return true;
+//            }
+//        }
 
-        return false;
+        return userId;
     }
 
     @Override

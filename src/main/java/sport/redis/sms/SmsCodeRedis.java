@@ -1,7 +1,6 @@
 package sport.redis.sms;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -39,6 +38,10 @@ public class SmsCodeRedis {
         String smsCodeKey = getSmsCodeKey(mobile, sendTime);
         String smsCode = jedis.hget(smsCodeKey, "code");
         String isVerify = jedis.hget(smsCodeKey, "isVerify");
+
+        if (smsCode == null || isVerify == null) {
+            return null;
+        }
 
         return new SmsCodeEntity(mobile, smsCode,
                 Long.valueOf(sendTime),
@@ -79,6 +82,10 @@ public class SmsCodeRedis {
     public SmsCodeEntity getSmsCode(String mobile) {
         Jedis jedis = mJedisPool.getResource();
         String sendTime = jedis.lindex(getMobileKey(mobile), 0);
+
+        if (sendTime == null) {
+            return null;
+        }
 
         return getSmsCode(jedis, mobile, sendTime);
     }

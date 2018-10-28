@@ -1,29 +1,13 @@
 package sport.util;
 
-import org.jose4j.json.JsonUtil;
-import org.jose4j.jwa.AlgorithmConstraints;
 import org.jose4j.jwe.ContentEncryptionAlgorithmIdentifiers;
 import org.jose4j.jwe.JsonWebEncryption;
 import org.jose4j.jwe.KeyManagementAlgorithmIdentifiers;
-import org.jose4j.jwk.RsaJsonWebKey;
-import org.jose4j.jwk.RsaJwkGenerator;
-import org.jose4j.jws.AlgorithmIdentifiers;
-import org.jose4j.jws.JsonWebSignature;
-import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.MalformedClaimException;
-import org.jose4j.jwt.NumericDate;
-import org.jose4j.jwt.consumer.ErrorCodes;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.jwt.consumer.JwtConsumer;
-import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import org.jose4j.keys.AesKey;
 import org.jose4j.keys.HmacKey;
 import org.jose4j.lang.JoseException;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 
 /**
  * jose的payLoad为String是jws
@@ -55,7 +39,7 @@ public class TokenUtil {
 //        return idToken;
 //    }
 //
-//    public void paraseToken(String token) throws InvalidJwtException {
+//    public void parseToken(String token) throws InvalidJwtException {
 //        JwtClaims jwtClaims = jwtConsumer.processToClaims(token);
 //    }
 //
@@ -105,7 +89,7 @@ public class TokenUtil {
         return idToken;
     }
 
-    public String paraseToken(String token) throws JoseException {
+    public String parseToken(String token) throws JoseException {
         Key key = getKey();
         JsonWebEncryption jwe2 = new JsonWebEncryption();
         jwe2.setKey(key);

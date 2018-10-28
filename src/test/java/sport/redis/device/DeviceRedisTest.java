@@ -1,15 +1,15 @@
 package sport.redis.device;
 
-import com.montnets.mwgate.common.GlobalParams;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sport.enums.LoginEnum;
 
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,7 +22,7 @@ public class DeviceRedisTest {
 
     @Test
     public void saveDeviceId() {
-        mDeviceRedis.saveDeviceId(mUserId, "1314", DeviceRedis.LOGIN);
+        mDeviceRedis.saveDeviceId(mUserId, "1314", LoginEnum.LOGIN.getStatu());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class DeviceRedisTest {
 
     @Test
     public void updateLoginStatu() {
-        mDeviceRedis.updateLoginStatu(mUserId, "12345", DeviceRedis.LOGIN);
+        mDeviceRedis.updateLoginStatu(mUserId, "12345", LoginEnum.LOGIN.getStatu());
     }
 
     @Test

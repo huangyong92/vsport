@@ -28,8 +28,9 @@ public class UserRepositoryTest {
     public void addUser() {
         User user = new User();
 
-        user.setMobile("13575732183");
+        user.setPhone("13575732183");
         user.setNickName("Daniel");
+        user.setPassword("555");
         user.setAvatar("http://xxx.png");
         user.setGender(1);
         user.setLivingCity("杭州");
@@ -85,8 +86,8 @@ public class UserRepositoryTest {
 
     @Test
     public void getPassword() {
-        List<String> passwordList = mUserRepository.getPassword("Daniel");
+        String userId = mUserRepository.findUserByNameAndPassword("Daniel", "555");
 
-        assertNotEquals(0, passwordList.size());
+        assertNotEquals(null, userId);
     }
 }

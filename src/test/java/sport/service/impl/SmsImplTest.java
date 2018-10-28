@@ -36,7 +36,7 @@ public class SmsImplTest {
 
     @Test
     public void sendSmsCode() {
-        int result = mSmsService.sendSmsCode(mobile, SmsType.LOGIN.getType());
+        int result = mSmsService.sendSmsCode(mobile, SmsType.LOGIN.getCode() + "");
         assertEquals(0, result);
     }
 

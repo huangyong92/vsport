@@ -7,7 +7,7 @@ public class User {
 
     private Integer userId;
 
-    private String mobile;
+    private String phone;
 
     private String password;
 

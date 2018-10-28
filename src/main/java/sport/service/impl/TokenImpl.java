@@ -3,6 +3,7 @@ package sport.service.impl;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sport.redis.token.BlackListRedis;
 import sport.service.TokenService;
 import sport.util.TokenUtil;
 
@@ -11,6 +12,9 @@ public class TokenImpl implements TokenService {
 
     @Autowired
     private TokenUtil mTokenUtil;
+
+    @Autowired
+    private BlackListRedis mBlackListRedis;
 
     @Override
     public String createToken(String userId) {
@@ -23,6 +27,26 @@ public class TokenImpl implements TokenService {
         }
 
         return null;
+    }
 
+    @Override
+    public String parseToken(String token) {
+        try {
+            return mTokenUtil.parseToken(token);
+        } catch (JoseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public void addToBlackList(String token) {
+        mBlackListRedis.addToBlackList(token);
+    }
+
+    @Override
+    public boolean isAtBlackList(String token) {
+        return mBlackListRedis.isAtBlcakList(token);
     }
 }

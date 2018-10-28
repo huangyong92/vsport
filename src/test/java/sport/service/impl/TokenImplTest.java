@@ -26,7 +26,7 @@ public class TokenImplTest {
 
         try {
             String token = tokenService.createToken("1");
-            String uid = tokenUtil.paraseToken(token);
+            String uid = tokenUtil.parseToken(token);
 
             assertEquals("1", uid);
         } catch (JoseException e) {

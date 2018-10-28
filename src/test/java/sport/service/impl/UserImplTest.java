@@ -25,7 +25,7 @@ public class UserImplTest {
         user.setNickName("文文");
         user.setGender(0);
         user.setPassword("wenwen123");
-        user.setMobile("13588199148");
+        user.setPhone("13588199148");
         user.setAvatar("www.xxx.com");
 
         userService.addUser(user);
@@ -33,14 +33,14 @@ public class UserImplTest {
 
     @Test
     public void findUserByPhone() {
-        User user = userService.findUserByPhone("13838766778");
+        User user = userService.findUserByPhone("13588199148");
 
         assertNotEquals(null, user);
     }
 
     @Test
     public void findUserByName() {
-        List<User> user = userService.findUserByName("宝宝");
+        List<User> user = userService.findUserByName("文文");
 
         assertNotEquals(0, user.size());
     }
@@ -63,9 +63,9 @@ public class UserImplTest {
 
     @Test
     public void verifyUserByPassword() {
-        boolean isTure = userService.verifyUserByPassword("宝宝", "bb999");
+        String userId = userService.getUserIdByPassword("文文", "wenwen123");
 
-        assertEquals(true, isTure);
+        assertNotEquals(null, userId);
     }
 
     @Test

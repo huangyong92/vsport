@@ -1,16 +1,11 @@
 package sport.util;
 
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.lang.JoseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.*;
 
@@ -28,7 +23,7 @@ public class TokenUtilTest {
 ////            token = tokenUtil.createToken();
 ////            System.out.println(token);
 //            token = "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NDAxMjA5NzQsImp0aSI6IkhIWUF0N0taejljemlhYkdObEoyMEEiLCJpYXQiOjE1NDAxMjA5MTQsIm5iZiI6MTU0MDEyMDc5NCwiZW1haWwiOiJtYWlsQGV4YW1wbGUuY29tIn0.rdRnQQVCcFf_EUlDJw0eZU_Q3IVdvskpluMh9dL_lqo";
-//            tokenUtil.paraseToken(token);
+//            tokenUtil.parseToken(token);
 ////        } catch (JoseException e) {
 ////            e.printStackTrace();
 //        } catch (InvalidJwtException e) {
@@ -79,7 +74,7 @@ public class TokenUtilTest {
 //            String uuid = UUID.randomUUID().toString().replace("-", "").toLowerCase();
 
             token = tokenUtil.createToken("abc123");
-            String uid = tokenUtil.paraseToken(token);
+            String uid = tokenUtil.parseToken(token);
 
             assertEquals("abc123", uid);
         } catch (JoseException e) {
