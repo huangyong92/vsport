@@ -1,5 +1,6 @@
-package sport.controller;
+package sport.controller.account;
 
+import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -7,7 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sport.domain.User;
-import sport.dto.RegisterDTO;
+import sport.dto.RegisterDto;
 import sport.enums.LoginEnum;
 import sport.enums.ResultEnum;
 import sport.service.*;
@@ -18,8 +19,9 @@ import sport.vo.RegiestVo;
 import sport.vo.ResultVo;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/account")
+@Api(value = "账号Apis")
+public class AccountController {
 
     @Autowired
     private UserService mUserService;
@@ -36,6 +38,7 @@ public class UserController {
     @Autowired
     private PushService mPushService;
 
+    @ApiOperation(value = "注册用户", notes = "注册成功即登录成功")
     @PostMapping("/profile")
     public ResultVo register(@Validated RegiestVo regiestVo,
                             BindingResult result) {
@@ -51,6 +54,13 @@ public class UserController {
             return ResultUtil.error(ResultEnum.SMS_MOBILE_ERROR.getMsg());
         }
 
+        //确保手机号没有注册过
+        User isExitUser = mUserService.findUserByPhone(regiestVo.phone);
+
+        if (isExitUser != null) {
+            return ResultUtil.error(ResultEnum.PHONE_IS_EXIT.getMsg());
+        }
+
         //保存用户基本信息
         User user = new User();
         BeanUtils.copyProperties(regiestVo, user);
@@ -61,13 +71,22 @@ public class UserController {
         //分发token
         String token = mTokenService.createToken(userId);
 
-        RegisterDTO dto = new RegisterDTO();
+        RegisterDto dto = new RegisterDto();
         dto.setToken(token);
         dto.setUserId(userId);
 
-        return ResultUtil.success("注册成功", dto);
+        return ResultUtil.success(dto);
     }
 
+    @ApiOperation(value = "手机号登录", notes = "设备上没有用户信息时，用手机号登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "appId", value = "推送对应的clientId",
+                    dataType = "string", required = true),
+            @ApiImplicitParam(name = "phone", value = "手机号",
+                    dataType = "string", required = true),
+            @ApiImplicitParam(name = "smsCode", value = "验证码",
+                    dataType = "string", required = true)
+    })
     @PostMapping("/login/phone")
     public ResultVo loginByPhone(@RequestParam("appId") String appId,
                                   @RequestParam("phone") String phone,
@@ -87,26 +106,47 @@ public class UserController {
         User user = mUserService.findUserByPhone(phone);
         String userId = String.valueOf(user.getUserId());
 
-        RegisterDTO data = login(userId, appId);
+        RegisterDto data = login(userId, appId);
 
-        return ResultUtil.success("登录成功", data);
+        return ResultUtil.success(data);
     }
 
+    @ApiOperation(value = "密码登录", notes = "设备上有用户信息时，用密码登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "appId", value = "推送对应的clientId",
+                    dataType = "string", required = true),
+            @ApiImplicitParam(name = "nikeName", value = "用户名",
+                    dataType = "string", required = true),
+            @ApiImplicitParam(name = "password", value = "密码",
+                    dataType = "string", required = true)
+    })
     @PostMapping("/login/password")
     public ResultVo loginByPassword(@RequestParam("appId") String appId,
-                                    @RequestParam("nikeName") String nikeName,
+                                    @RequestParam("phone") String phone,
                                     @RequestParam("password") String password) {
-        //验证身份
-        String userId = mUserService.getUserIdByPassword(nikeName, password);
-        if (userId == null) {
-            return ResultUtil.error("账号验证失败");
+        boolean isPhone = FormatVerifyUtil.isPhone(phone);
+        if (!isPhone) {
+            return ResultUtil.error(ResultEnum.SMS_MOBILE_ERROR.getMsg());
         }
 
-        RegisterDTO data = login(userId, appId);
+        //验证身份
+        String userId = mUserService.getUserIdByPassword(phone, password);
+        if (userId == null) {
+            return ResultUtil.error(ResultEnum.PASSWORD_LOGIN_ERROR.getMsg());
+        }
 
-        return ResultUtil.success("登录成功", data);
+        RegisterDto data = login(userId, appId);
+
+        return ResultUtil.success(data);
     }
 
+    @ApiOperation(value = "退出登录", notes = "头信息需要带authorization:Bearer:token")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户Id",
+                    dataType = "string", required = true),
+            @ApiImplicitParam(name = "appId", value = "推送对应的clientId",
+                    dataType = "string", required = true)
+    })
     @PatchMapping("/loginOut")
     public ResultVo loginOut(@RequestHeader(value = "Authorization") String authorization,
                             @RequestParam("userId") String userId,
@@ -131,11 +171,11 @@ public class UserController {
         //将token列入黑名单
         mTokenService.addToBlackList(token);
 
-        return ResultUtil.success("退出登录成功", null);
+        return ResultUtil.success(null);
     }
 
-    private RegisterDTO login(String userId, String appId) {
-        RegisterDTO registerDTO = new RegisterDTO();
+    private RegisterDto login(String userId, String appId) {
+        RegisterDto registerDTO = new RegisterDto();
 
         //检查是否有别的地方登录
         String currentDevice = mDeviceService.getCurrentDevice(userId);

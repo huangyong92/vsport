@@ -101,6 +101,10 @@ public class SmsImpl implements SmsService {
         SmsCodeEntity smsCodeEntity = mSmsCodeRedis.getSmsCode(mobile);
         long currentTime = System.currentTimeMillis();
 
+        if (smsCodeEntity == null) {
+            return ResultEnum.PHONE_NOT_REGISTER.getCode();
+        }
+
         long intervalTime = currentTime - smsCodeEntity.sendTime;
         int validMilliSec = 15 * 60 * 1000;
         boolean isInvalid = mTimeUtil.compareTime(intervalTime, validMilliSec);

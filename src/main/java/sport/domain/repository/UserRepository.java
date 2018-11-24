@@ -24,6 +24,6 @@ public interface UserRepository {
 
     List<User> findUserByTarget(String target);
 
-    String findUserByNameAndPassword(@Param("name") String name,
-                                           @Param("password") String password);
+    String findUserByPhoneAndPassword(@Param("phone") String phone,
+                                      @Param("password") String password);
 }

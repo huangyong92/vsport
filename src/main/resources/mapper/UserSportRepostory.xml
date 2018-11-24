@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="sport.domain.repository.UserSportRepostory">
+    <resultMap id="SportThemeMap" type="SportTheme">
+        <result property="sportThemeId" javaType="Integer" column="sport_theme_id" jdbcType="INTEGER"/>
+        <result property="courseId" javaType="String" column="course_id" jdbcType="VARCHAR"/>
+        <result property="theme" javaType="String" column="theme" jdbcType="VARCHAR"/>
+        <result property="startTime" javaType="Long" column="start_time" jdbcType="BIGINT"/>
+        <result property="endTime" javaType="Long" column="end_time" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <resultMap id="SportDetailMap" type="SportDetail">
+        <result property="sportType" javaType="Integer" column="sport_type" jdbcType="TINYINT"/>
+        <result property="sportStatu" javaType="String" column="sport_statu" jdbcType="VARCHAR"/>
+        <result property="sportName" javaType="String" column="sport_name" jdbcType="VARCHAR"/>
+        <result property="exercisePart" javaType="String" column="exercise_part" jdbcType="VARCHAR"/>
+        <result property="sportContent" javaType="String" column="sport_content" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="SportTimeMap" type="SportTime">
+        <result property="sportDate" javaType="String" column="sport_date" jdbcType="VARCHAR"/>
+        <result property="lastTime" javaType="Integer" column="last_time" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="batchCreateTheme">
+        INSERT INTO sport_theme
+        (course_id,user_id,theme,start_time,end_time)
+        VALUES
+        <foreach collection="list" item="theme" separator=",">
+            (
+            #{theme.courseId},
+            #{theme.userId},
+            #{theme.theme},
+            #{theme.startTime},
+            #{theme.endTime}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="batchCreateSportDetail">
+        INSERT INTO sport_detail
+        (
+        sport_statu,
+        exercise_part,
+        sport_theme_id,
+        sport_type,
+        sport_name,
+        sport_content
+        )
+        VALUES
+        <foreach collection="list" item="sportDetail" separator=",">
+            (
+            #{sportDetail.sportStatu},
+            #{sportDetail.exercisePart},
+            #{sportDetail.sportThemeId},
+            #{sportDetail.sportType},
+            #{sportDetail.sportName},
+            #{sportDetail.sportContent}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="batchAddSportTime">
+        INSERT INTO sport_time
+        (user_id,sport_date,last_time)
+        VALUES
+        <foreach collection="list" item="sportTime" separator=",">
+            (
+            #{sportTime.userId},
+            #{sportTime.sportDate},
+            #{sportTime.lastTime}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateSportTime">
+        UPDATE sport_time
+        SET
+        last_time=#{lastTime}
+        WHERE user_id=#{userId} AND sport_date=#{sportDate}
+    </update>
+
+    <select id="getSportThemeList" parameterType="INTEGER" resultMap="SportThemeMap">
+        SELECT *
+        FROM sport_theme
+        WHERE user_id=#{userId}
+    </select>
+
+    <select id="getSportDetailSById" resultMap="SportDetailMap">
+        SELECT sport_type,sport_name,sport_content
+        FROM sport_detail
+        WHERE content_id IN
+        <foreach collection="list" item="contentId" separator=","
+                 open="(" close=")">
+            #{contentId}
+        </foreach>
+    </select>
+
+    <select id="getSportDetailSByTheme" parameterType="INTEGER" resultMap="SportDetailMap">
+        SELECT sport_type,sport_statu,sport_name,exercise_part,sport_content
+        FROM sport_detail
+        WHERE sport_theme_id=#{themeId}
+    </select>
+
+    <select id="getSportTimeList" resultMap="SportTimeMap">
+        SELECT sport_date,last_time
+        FROM sport_time
+        WHERE user_id=#{userId}
+        AND sport_date BETWEEN #{startTime} AND #{endTime}
+    </select>
+</mapper>

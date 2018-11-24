@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="sport.domain.repository.LiveCourseRepostory">
+    <resultMap id="courseIntroduceMap" type="LiveCourseIntroduce">
+        <result property="id" javaType="String" column="id" jdbcType="VARCHAR"/>
+        <result property="title" javaType="String" column="title" jdbcType="VARCHAR"/>
+        <result property="publisherId" javaType="Integer" column="publisher_id" jdbcType="INTEGER"/>
+        <result property="publisherName" javaType="String" column="publisher_name" jdbcType="VARCHAR"/>
+        <result property="startTime" javaType="Long" column="start_time" jdbcType="BIGINT"/>
+        <result property="endTime" javaType="Long" column="end_time" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <resultMap id="SportDetailMap" type="SportDetail">
+        <result property="contentId" javaType="Integer" column="content_id" jdbcType="INTEGER"/>
+        <result property="sportType" javaType="Integer" column="sport_type" jdbcType="TINYINT"/>
+        <result property="restTime" javaType="Integer" column="rest_time" jdbcType="INTEGER"/>
+        <result property="sportName" javaType="String" column="sport_name" jdbcType="VARCHAR"/>
+        <result property="sportContent" javaType="String" column="sport_content" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--看下jdbcType是否可以不用全大写-->
+    <resultMap id="LiveCourseRecordMap" type="LiveCourseRecord">
+        <!--<result property="id" javaType="Integer" column="content_id" jdbcType="INTEGER"/>-->
+        <!--<result property="liveCourseId" javaType="Integer" column="live_course_id" jdbcType="INTEGER"/>-->
+        <result property="userId" javaType="Integer" column="user_id" jdbcType="INTEGER"/>
+        <!--<result property="contentId" javaType="Integer" column="content_id" jdbcType="INTEGER"/>-->
+        <result property="lastTime" javaType="Integer" column="last_time" jdbcType="INTEGER"/>
+        <result property="actionName" javaType="String" column="action_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="findCourseListByPublisher" parameterType="Integer" resultMap="courseIntroduceMap">
+        SELECT *
+        FROM live_course
+        WHERE publisher_id=#{publisherId}
+    </select>
+
+    <select id="getMyLiveCourseIds" parameterType="Integer" resultType="STRING">
+        SELECT live_course_id
+        FROM my_live_course
+        WHERE user_id=#{userId}
+    </select>
+
+    <select id="getUserCourseList" parameterType="String" resultMap="courseIntroduceMap">
+        SELECT *
+        FROM live_course
+        WHERE id IN
+        <foreach collection="list" item="courseId" separator=","
+                 open="(" close=")">
+            #{courseId}
+        </foreach>
+    </select>
+
+    <select id="getCourseIntroduce" parameterType="String" resultMap="courseIntroduceMap">
+        SELECT *
+        FROM live_course
+        WHERE id=#{id}
+    </select>
+
+    <select id="getAllParticButPublisher" parameterType="String" resultType="Integer">
+        SELECT user_id
+        FROM my_live_course
+        WHERE live_course_id=#{live_courseId}
+    </select>
+
+    <select id="getSportDetailList" parameterType="String" resultMap="SportDetailMap">
+        SELECT content_id,sport_type,rest_time,sport_name,sport_content
+        FROM sport_detail
+        WHERE course_id=#{courseId}
+    </select>
+
+    <select id="getCourseRecord" parameterType="String" resultMap="LiveCourseRecordMap">
+        SELECT user_id,last_time,action_name
+        FROM live_course_record
+        WHERE live_course_id=#{liveCourseId}
+    </select>
+
+    <insert id="batchAddCourseIntroduce">
+        INSERT INTO live_course
+        (id,publisher_id,publisher_name,start_time,end_time,title)
+        VALUES
+        <foreach collection="list" item="courseIntroduce" separator=",">
+            (
+            #{courseIntroduce.id},
+            #{courseIntroduce.publisherId},
+            #{courseIntroduce.publisherName},
+            #{courseIntroduce.startTime},
+            #{courseIntroduce.endTime},
+            #{courseIntroduce.title}
+            )
+
+        </foreach>
+    </insert>
+
+    <insert id="batchAddSportDetail">
+        INSERT INTO sport_detail
+        (course_id, sport_type, rest_time, sport_name, sport_content)
+        VALUES
+        <foreach collection="list" item="sportDetail" separator=",">
+            (
+            #{sportDetail.courseId},
+            #{sportDetail.sportType},
+            #{sportDetail.restTime},
+            #{sportDetail.sportName},
+            #{sportDetail.sportContent}
+            )
+
+        </foreach>
+    </insert>
+
+    <insert id="batchAddCourseToUser" parameterType="String">
+        INSERT INTO my_live_course
+        (live_course_id, user_id)
+        VALUES
+        <foreach collection="list" item="userId" separator=",">
+            (#{courseId},#{userId})
+        </foreach>
+
+    </insert>
+
+    <insert id="batchAddCourseRecord">
+        INSERT INTO live_course_record
+        (live_course_id,user_id,content_id,finish_time,last_time,action_name)
+        VALUES
+        <foreach collection="list" item="courseRecord" separator=",">
+            (
+            #{courseRecord.liveCourseId},
+            #{courseRecord.userId},
+            #{courseRecord.contentId},
+            #{courseRecord.finishTime},
+            #{courseRecord.lastTime},
+            #{courseRecord.actionName}
+            )
+        </foreach>
+    </insert>
+</mapper>

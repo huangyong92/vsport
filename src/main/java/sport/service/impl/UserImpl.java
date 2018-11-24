@@ -43,7 +43,7 @@ public class UserImpl implements UserService {
     //todo 是否可以用缓存
     @Override
     public String getUserIdByPassword(String name, String myPassword) {
-        String userId = mUserRepository.findUserByNameAndPassword(name, myPassword);
+        String userId = mUserRepository.findUserByPhoneAndPassword(name, myPassword);
 
 //        for (String password:
 //                passwordList) {

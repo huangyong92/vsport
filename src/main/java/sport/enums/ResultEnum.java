@@ -11,6 +11,9 @@ public enum ResultEnum implements BaseEnum {
     SMS_MOBILE_ERROR(-10003, "手机号码格式不对"),
     SMS_SEND_ERROR(-10004, "短信发送失败,请稍后再试"),
     SMS_INVAILD_CODE(-10005, "无效的验证码"),
+    PHONE_IS_EXIT(-10006, "手机号已存在"),
+    PHONE_NOT_REGISTER(-10007, "手机号不存在"),
+    PASSWORD_LOGIN_ERROR(-10008, "手机或密码不正确")
     ;
 
     private int code;

@@ -1,0 +1,90 @@
+2018-11-17 17:05:12.967 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 17:05:13.053 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 17:14:00.335 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 17:14:00.471 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 17:34:28.590 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 17:34:28.631 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 17:35:12.258 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 17:35:12.261 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 17:54:44.936 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 17:54:44.948 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 19:59:02.308 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 19:59:02.369 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 20:28:59.503 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 20:28:59.552 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 20:29:41.232 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 20:29:41.234 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 20:56:53.348 通过域名获取IP失败,域名:api01.monyun.cn
+java.net.UnknownHostException: api01.monyun.cn
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:907)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1302)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1255)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1171)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1105)
+	at java.net.InetAddress.getByName(InetAddress.java:1055)
+	at com.montnets.mwgate.smsutil.ConfigManager.getIpByDomain(ConfigManager.java:543)
+	at com.montnets.mwgate.smsutil.ConfigManager.setAccountInfo(ConfigManager.java:166)
+	at sport.util.SmsUtil.setAccount(SmsUtil.java:46)
+	at sport.runner.SmsRunner.run(SmsRunner.java:23)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:797)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:781)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243)
+	at sport.SportAppcation.main(SportAppcation.java:13)
+
+2018-11-17 20:56:53.349 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取主IP失败,端口:7901
+2018-11-17 20:56:53.352 通过域名获取IP失败,域名:api02.monyun.cn
+java.net.UnknownHostException: api02.monyun.cn
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:907)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1302)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1255)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1171)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1105)
+	at java.net.InetAddress.getByName(InetAddress.java:1055)
+	at com.montnets.mwgate.smsutil.ConfigManager.getIpByDomain(ConfigManager.java:543)
+	at com.montnets.mwgate.smsutil.ConfigManager.setBakAddress(ConfigManager.java:503)
+	at com.montnets.mwgate.smsutil.ConfigManager.validateIpAndPortBak(ConfigManager.java:379)
+	at com.montnets.mwgate.smsutil.ConfigManager.setAccountInfo(ConfigManager.java:196)
+	at sport.util.SmsUtil.setAccount(SmsUtil.java:46)
+	at sport.runner.SmsRunner.run(SmsRunner.java:23)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:797)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:781)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243)
+	at sport.SportAppcation.main(SportAppcation.java:13)
+
+2018-11-17 20:56:53.353 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取备IP失败,端口:7901
+2018-11-17 20:58:56.242 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 20:58:56.286 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 21:01:03.108 通过域名获取IP失败,域名:api01.monyun.cn
+java.net.UnknownHostException: api01.monyun.cn
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:907)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1302)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1255)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1171)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1105)
+	at java.net.InetAddress.getByName(InetAddress.java:1055)
+	at com.montnets.mwgate.smsutil.ConfigManager.getIpByDomain(ConfigManager.java:543)
+	at com.montnets.mwgate.smsutil.ConfigManager.setAccountInfo(ConfigManager.java:166)
+	at sport.util.SmsUtil.setAccount(SmsUtil.java:46)
+	at sport.runner.SmsRunner.run(SmsRunner.java:23)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:797)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:781)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1255)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1243)
+	at sport.SportAppcation.main(SportAppcation.java:13)
+
+2018-11-17 21:01:03.114 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取主IP失败,端口:7901
+2018-11-17 21:01:07.121 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 21:26:47.654 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 21:26:48.396 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 21:27:53.052 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 21:27:53.055 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901
+2018-11-17 22:02:06.305 设置发送账号[E105Y2]信息时,通过主域名[api01.monyun.cn]获取到主IP[114.67.62.211],端口:7901
+2018-11-17 22:02:06.452 设置发送账号[E105Y2]信息时,通过备域名[api02.monyun.cn]获取到备IP[114.67.62.211],端口:7901

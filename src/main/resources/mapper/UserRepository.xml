@@ -18,14 +18,12 @@
     <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
         INSERT INTO user
         (
-        <if test="livingCity != null">living_city,</if>
-        <if test="sportTarget != null">sport_target,</if>
-        phone, password, nick_name, avatar, gender
+        living_city,sport_target,phone, password, nick_name, avatar, gender
         )
         VALUES
         (
-        <if test="livingCity != null">#{livingCity, jdbcType=VARCHAR},</if>
-        <if test="sportTarget != null">#{sportTarget, jdbcType=VARCHAR},</if>
+        #{livingCity, jdbcType=VARCHAR},
+        #{sportTarget, jdbcType=VARCHAR},
         #{phone, jdbcType=VARCHAR},
         #{password, jdbcType=VARCHAR},
         #{nickName, jdbcType=VARCHAR},
@@ -90,9 +88,9 @@
         WHERE sport_target=#{target}
     </select>
 
-    <select id="findUserByNameAndPassword" resultType="String">
+    <select id="findUserByPhoneAndPassword" resultType="String">
         SELECT user_id
         FROM user
-        WHERE nick_name=#{name} AND password=#{password}
+        WHERE phone=#{phone} AND password=#{password}
     </select>
 </mapper>

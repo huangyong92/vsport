@@ -4,11 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.connection.RedisServer;
 import org.springframework.test.context.junit4.SpringRunner;
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import sport.config.RedisConfig;
 import sport.domain.User;
 
 import java.util.List;
@@ -26,16 +23,43 @@ public class UserRepositoryTest {
 
     @Test
     public void addUser() {
-        User user = new User();
+        User user1 = new User();
 
-        user.setPhone("13575732183");
-        user.setNickName("Daniel");
-        user.setPassword("555");
-        user.setAvatar("http://xxx.png");
-        user.setGender(1);
-        user.setLivingCity("杭州");
+        user1.setPhone("13575732183");
+        user1.setNickName("Daniel");
+        user1.setPassword("555");
+        user1.setAvatar("http://xxx.png");
+        user1.setGender(1);
+        user1.setLivingCity("杭州");
 
-        int id = mUserRepository.addUser(user);
+        User user2 = new User();
+        user2.setPhone("13588199148");
+        user2.setNickName("小丫头");
+        user2.setPassword("123");
+        user2.setAvatar("http://xxx2.png");
+        user2.setGender(0);
+        user2.setLivingCity("杭州");
+
+        User user3 = new User();
+        user3.setPhone("13738766778");
+        user3.setNickName("小勇");
+        user3.setPassword("123");
+        user3.setAvatar("http://xxx2.png");
+        user3.setGender(1);
+        user3.setLivingCity("杭州");
+
+        User user4 = new User();
+        user4.setPhone("1111111111");
+        user4.setNickName("小太阳");
+        user4.setPassword("123");
+        user4.setAvatar("http://xxx2.png");
+        user4.setGender(1);
+        user4.setLivingCity("杭州");
+
+        int id = mUserRepository.addUser(user1);
+        mUserRepository.addUser(user2);
+        mUserRepository.addUser(user3);
+        mUserRepository.addUser(user4);
 
         assertNotEquals(0, id);
     }
@@ -86,7 +110,7 @@ public class UserRepositoryTest {
 
     @Test
     public void getPassword() {
-        String userId = mUserRepository.findUserByNameAndPassword("Daniel", "555");
+        String userId = mUserRepository.findUserByPhoneAndPassword("Daniel", "555");
 
         assertNotEquals(null, userId);
     }
